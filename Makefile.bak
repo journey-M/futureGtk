@@ -1,0 +1,24 @@
+CC=gcc
+FLAGS +=-g
+FLAGS += $(shell pkg-config --cflags glib-2.0 gtk+-3.0)  
+LDFLAGS +=-lm -lcurl 
+LDFLAGS += $(shell pkg-config --libs glib-2.0 gtk+-3.0)
+
+OBJECTS += $(patsubst %.c,%.o,$(wildcard *.c)) 
+EXE			+= future
+
+
+$(EXE): $(OBJECTS)
+	$(CC) -o $@ $^	$(FLAGS) $(LDFLAGS) 
+
+wingtk.o: wingtk.c
+	$(CC) -c $^ $(FLAGS) $(LDFLAGS)
+
+%.o:%.c
+	$(CC) -g -c $<
+
+.PHONY: clean info
+info:
+	@echo $(OBJECTS)
+clean: 
+	rm *.o
