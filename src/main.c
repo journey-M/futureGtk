@@ -8,8 +8,8 @@
 #include "../include/wingtk.h"
 #include "../include/cJSON.h"
 
-#define wWidth 600
-#define wHeigth 450
+#define wWidth 400
+#define wHeigth 320
 /**
  * 目标功能：
  * 1.从配置中读取配置
@@ -36,15 +36,8 @@ struct Config
 
 
 
-struct Config* readConfig (){
-	char path[80];
-	getcwd(path, sizeof(path));
-	char* configName = "/config.json";
-	char* configPath = malloc((strlen(path) + strlen(configName)));	
-	memcpy(configPath, path, sizeof(path));
-	sprintf(configPath, "%s%s", &path, configName); 
+struct Config* readConfig (char* configPath, int len){
 	printf("config file = %s\n",configPath);
-	
 	int fd = open(configPath, O_RDONLY);
 
 	if(fd == -1){
@@ -137,7 +130,6 @@ void poll_service(struct Config * config){
 			sleep(2);
 		}
 		
-		printf("\n");
 		sleep(config->heartBeat);
 	}
 }
@@ -145,15 +137,16 @@ void poll_service(struct Config * config){
 int main(int argc, char**argv)
 {
 	/** 程序启动  读取配置文件 **/
-	struct Config* config = readConfig();
-	
+	char *configPath = "/home/guoweiji/openSource/futureGtk/config.json";
+	struct Config* config = readConfig(configPath, strlen(configPath));
+
 	wingtk_init(argc, argv);
 
 	poll_service(config);
 
 	
 	//TODO 随时读取输入的命令
-	// wingtk_init(argc, argv);	
+	//wingtk_init(argc, argv);	
 			
 
 	return 0;

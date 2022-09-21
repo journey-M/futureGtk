@@ -14,6 +14,6 @@ $(subdir):
 	cd $@ && $(MAKE)
 
 $(OBJDIR)/%.o:%.c 
-	gcc -c  $< -o $@ 
+	gcc -g -c  $< -o $@ 
 
 .PHONY:clean all $(subdir) 
